@@ -568,7 +568,7 @@
   <!-- STEP 1: Nome -->
   <div class="step" id="step-1" data-step="1">
     <div class="step-inner">
-      <div class="step-label">01 / 10</div>
+      <div class="step-label">01 / 11</div>
       <h2 class="question">Qual é o seu nome completo?</h2>
       <div class="input-wrap">
         <input
@@ -594,7 +594,7 @@
   <!-- STEP 2: WhatsApp -->
   <div class="step" id="step-2" data-step="2">
     <div class="step-inner">
-      <div class="step-label">02 / 10</div>
+      <div class="step-label">02 / 11</div>
       <h2 class="question">Qual é o seu WhatsApp?</h2>
       <div class="input-wrap">
         <div class="phone-row">
@@ -632,7 +632,7 @@
   <!-- STEP 3: Email -->
   <div class="step" id="step-3" data-step="3">
     <div class="step-inner">
-      <div class="step-label">03 / 10</div>
+      <div class="step-label">03 / 11</div>
       <h2 class="question">Qual é o seu e-mail?</h2>
       <div class="input-wrap">
         <input
@@ -659,7 +659,7 @@
   <!-- STEP 4: Instagram -->
   <div class="step" id="step-4" data-step="4">
     <div class="step-inner">
-      <div class="step-label">04 / 10</div>
+      <div class="step-label">04 / 11</div>
       <h2 class="question">Qual é o seu @ do Instagram?</h2>
       <div class="input-wrap">
         <input
@@ -682,10 +682,41 @@
       <div class="enter-hint">ou pressione <kbd>Enter ↵</kbd></div>
     </div>
   </div>
-  <!-- STEP 5: Segmento -->
+  <!-- STEP 5: Funcionários -->
   <div class="step" id="step-5" data-step="5">
     <div class="step-inner">
-      <div class="step-label">05 / 10</div>
+      <div class="step-label">05 / 11</div>
+      <h2 class="question">Quantos funcionários tem na sua empresa?</h2>
+      <p class="question-hint">Entre CLT e Prestadores de serviço<br><span style="font-size:13px;color:rgba(255,255,255,0.55);">(O número se refere a pessoas que trabalham na sua empresa além de você)</span></p>
+      <div class="choices" id="choices-funcionarios" data-field="funcionarios">
+        <button class="choice-card" data-value="Mais de 20 funcionários" onclick="selectChoice(this, 5)" tabindex="0">
+          <span class="choice-letter">A</span>
+          <span>Mais de 20 funcionários</span>
+        </button>
+        <button class="choice-card" data-value="10 a 20 funcionários" onclick="selectChoice(this, 5)" tabindex="0">
+          <span class="choice-letter">B</span>
+          <span>10 a 20 funcionários</span>
+        </button>
+        <button class="choice-card" data-value="6 a 10 funcionários" onclick="selectChoice(this, 5)" tabindex="0">
+          <span class="choice-letter">C</span>
+          <span>6 a 10 funcionários</span>
+        </button>
+        <button class="choice-card" data-value="1 a 5 funcionários" onclick="selectChoice(this, 5)" tabindex="0">
+          <span class="choice-letter">D</span>
+          <span>1 a 5 funcionários</span>
+        </button>
+        <button class="choice-card" data-value="Ainda não tenho funcionários" onclick="selectChoice(this, 5)" tabindex="0">
+          <span class="choice-letter">E</span>
+          <span>Ainda não tenho funcionários</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- STEP 6: Segmento -->
+  <div class="step" id="step-6" data-step="6">
+    <div class="step-inner">
+      <div class="step-label">06 / 11</div>
       <h2 class="question">Qual é o seu segmento ou mercado de atuação?</h2>
       <div class="input-wrap">
         <input
@@ -697,7 +728,7 @@
         />
         <div class="input-error" id="error-segmento">Por favor, informe seu segmento de atuação.</div>
       </div>
-      <button class="btn-primary" onclick="advanceStep(5)">
+      <button class="btn-primary" onclick="advanceStep(6)">
         Avançar
         <svg class="btn-arrow" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M3 9H15M15 9L9 3M15 9L9 15" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -707,33 +738,33 @@
     </div>
   </div>
 
-  <!-- STEP 6: Faturamento -->
-  <div class="step" id="step-6" data-step="6">
+  <!-- STEP 7: Faturamento -->
+  <div class="step" id="step-7" data-step="7">
     <div class="step-inner">
-      <div class="step-label">06 / 10</div>
+      <div class="step-label">07 / 11</div>
       <h2 class="question">Qual é o faturamento anual do seu negócio?</h2>
       <div class="choices" id="choices-faturamento" data-field="faturamento">
-        <button class="choice-card" data-value="Acima de R$10 milhões/ano" onclick="selectChoice(this, 6)" tabindex="0">
+        <button class="choice-card" data-value="Acima de R$10 milhões/ano" onclick="selectChoice(this, 7)" tabindex="0">
           <span class="choice-letter">A</span>
           <span>Acima de R$10 milhões/ano</span>
         </button>
-        <button class="choice-card" data-value="Entre R$5 milhões e R$10 milhões/ano" onclick="selectChoice(this, 6)" tabindex="0">
+        <button class="choice-card" data-value="Entre R$5 milhões e R$10 milhões/ano" onclick="selectChoice(this, 7)" tabindex="0">
           <span class="choice-letter">B</span>
           <span>Entre R$5 milhões e R$10 milhões/ano</span>
         </button>
-        <button class="choice-card" data-value="Entre R$1 milhão e R$5 milhões/ano" onclick="selectChoice(this, 6)" tabindex="0">
+        <button class="choice-card" data-value="Entre R$1 milhão e R$5 milhões/ano" onclick="selectChoice(this, 7)" tabindex="0">
           <span class="choice-letter">C</span>
           <span>Entre R$1 milhão e R$5 milhões/ano</span>
         </button>
-        <button class="choice-card" data-value="Entre R$500 mil e R$1 milhão/ano" onclick="selectChoice(this, 6)" tabindex="0">
+        <button class="choice-card" data-value="Entre R$500 mil e R$1 milhão/ano" onclick="selectChoice(this, 7)" tabindex="0">
           <span class="choice-letter">D</span>
           <span>Entre R$500 mil e R$1 milhão/ano</span>
         </button>
-        <button class="choice-card" data-value="Abaixo de R$100 mil/ano" onclick="selectChoice(this, 6)" tabindex="0">
+        <button class="choice-card" data-value="Abaixo de R$100 mil/ano" onclick="selectChoice(this, 7)" tabindex="0">
           <span class="choice-letter">E</span>
           <span>Abaixo de R$100 mil/ano</span>
         </button>
-        <button class="choice-card" data-value="Ainda não tenho faturamento" onclick="selectChoice(this, 6)" tabindex="0">
+        <button class="choice-card" data-value="Ainda não tenho faturamento" onclick="selectChoice(this, 7)" tabindex="0">
           <span class="choice-letter">F</span>
           <span>Ainda não tenho faturamento</span>
         </button>
@@ -741,25 +772,25 @@
     </div>
   </div>
 
-  <!-- STEP 7: Tempo de negócio -->
-  <div class="step" id="step-7" data-step="7">
+  <!-- STEP 8: Tempo de negócio -->
+  <div class="step" id="step-8" data-step="8">
     <div class="step-inner">
-      <div class="step-label">07 / 10</div>
+      <div class="step-label">08 / 11</div>
       <h2 class="question">Há quanto tempo você tem o seu negócio?</h2>
       <div class="choices" id="choices-tempo" data-field="tempo_negocio">
-        <button class="choice-card" data-value="Menos de 1 ano" onclick="selectChoice(this, 7)" tabindex="0">
+        <button class="choice-card" data-value="Menos de 1 ano" onclick="selectChoice(this, 8)" tabindex="0">
           <span class="choice-letter">A</span>
           <span>Menos de 1 ano</span>
         </button>
-        <button class="choice-card" data-value="Entre 1 e 3 anos" onclick="selectChoice(this, 7)" tabindex="0">
+        <button class="choice-card" data-value="Entre 1 e 3 anos" onclick="selectChoice(this, 8)" tabindex="0">
           <span class="choice-letter">B</span>
           <span>Entre 1 e 3 anos</span>
         </button>
-        <button class="choice-card" data-value="Entre 3 e 7 anos" onclick="selectChoice(this, 7)" tabindex="0">
+        <button class="choice-card" data-value="Entre 3 e 7 anos" onclick="selectChoice(this, 8)" tabindex="0">
           <span class="choice-letter">C</span>
           <span>Entre 3 e 7 anos</span>
         </button>
-        <button class="choice-card" data-value="Mais de 7 anos" onclick="selectChoice(this, 7)" tabindex="0">
+        <button class="choice-card" data-value="Mais de 7 anos" onclick="selectChoice(this, 8)" tabindex="0">
           <span class="choice-letter">D</span>
           <span>Mais de 7 anos</span>
         </button>
@@ -767,33 +798,33 @@
     </div>
   </div>
 
-  <!-- STEP 8: Maior dificuldade -->
-  <div class="step" id="step-8" data-step="8">
+  <!-- STEP 9: Maior dificuldade -->
+  <div class="step" id="step-9" data-step="9">
     <div class="step-inner">
-      <div class="step-label">08 / 10</div>
+      <div class="step-label">09 / 11</div>
       <h2 class="question">Qual é a sua maior dificuldade hoje?</h2>
       <div class="choices" id="choices-dificuldade" data-field="maior_dificuldade">
-        <button class="choice-card" data-value="Não consigo cobrar mais caro" onclick="selectChoice(this, 8)" tabindex="0">
+        <button class="choice-card" data-value="Não consigo cobrar mais caro" onclick="selectChoice(this, 9)" tabindex="0">
           <span class="choice-letter">A</span>
           <span>Não consigo cobrar mais caro</span>
         </button>
-        <button class="choice-card" data-value="Minha marca não gera autoridade e desejo suficientes" onclick="selectChoice(this, 8)" tabindex="0">
+        <button class="choice-card" data-value="Minha marca não gera autoridade e desejo suficientes" onclick="selectChoice(this, 9)" tabindex="0">
           <span class="choice-letter">B</span>
           <span>Minha marca não gera autoridade e desejo suficientes</span>
         </button>
-        <button class="choice-card" data-value="Minha operação depende 100% de mim" onclick="selectChoice(this, 8)" tabindex="0">
+        <button class="choice-card" data-value="Minha operação depende 100% de mim" onclick="selectChoice(this, 9)" tabindex="0">
           <span class="choice-letter">C</span>
           <span>Minha operação depende 100% de mim</span>
         </button>
-        <button class="choice-card" data-value="Não consigo utilizar o DIGITAL para captar clientes" onclick="selectChoice(this, 8)" tabindex="0">
+        <button class="choice-card" data-value="Não consigo utilizar o DIGITAL para captar clientes" onclick="selectChoice(this, 9)" tabindex="0">
           <span class="choice-letter">D</span>
           <span>Não consigo utilizar o DIGITAL para captar clientes</span>
         </button>
-        <button class="choice-card" data-value="Não tenho previsibilidade de faturamento" onclick="selectChoice(this, 8)" tabindex="0">
+        <button class="choice-card" data-value="Não tenho previsibilidade de faturamento" onclick="selectChoice(this, 9)" tabindex="0">
           <span class="choice-letter">E</span>
           <span>Não tenho previsibilidade de faturamento</span>
         </button>
-        <button class="choice-card" data-value="Não tenho um ecossistema de produtos bem estruturado" onclick="selectChoice(this, 8)" tabindex="0">
+        <button class="choice-card" data-value="Não tenho um ecossistema de produtos bem estruturado" onclick="selectChoice(this, 9)" tabindex="0">
           <span class="choice-letter">F</span>
           <span>Não tenho um ecossistema de produtos bem estruturado</span>
         </button>
@@ -801,29 +832,29 @@
     </div>
   </div>
 
-  <!-- STEP 9: Como conheceu -->
-  <div class="step" id="step-9" data-step="9">
+  <!-- STEP 10: Como conheceu -->
+  <div class="step" id="step-10" data-step="10">
     <div class="step-inner">
-      <div class="step-label">09 / 10</div>
+      <div class="step-label">10 / 11</div>
       <h2 class="question">Como você conheceu a Mentory International®?</h2>
       <div class="choices" id="choices-conheceu" data-field="como_conheceu">
-        <button class="choice-card" data-value="Instagram do Ed Souza" onclick="selectChoice(this, 9)" tabindex="0">
+        <button class="choice-card" data-value="Instagram do Ed Souza" onclick="selectChoice(this, 10)" tabindex="0">
           <span class="choice-letter">A</span>
           <span>Instagram do Ed Souza</span>
         </button>
-        <button class="choice-card" data-value="Instagram da Clara do Vale" onclick="selectChoice(this, 9)" tabindex="0">
+        <button class="choice-card" data-value="Instagram da Clara do Vale" onclick="selectChoice(this, 10)" tabindex="0">
           <span class="choice-letter">B</span>
           <span>Instagram da Clara do Vale</span>
         </button>
-        <button class="choice-card" data-value="Indicação de um aluno" onclick="selectChoice(this, 9)" tabindex="0">
+        <button class="choice-card" data-value="Indicação de um aluno" onclick="selectChoice(this, 10)" tabindex="0">
           <span class="choice-letter">C</span>
           <span>Indicação de um aluno</span>
         </button>
-        <button class="choice-card" data-value="YouTube" onclick="selectChoice(this, 9)" tabindex="0">
+        <button class="choice-card" data-value="YouTube" onclick="selectChoice(this, 10)" tabindex="0">
           <span class="choice-letter">D</span>
           <span>YouTube</span>
         </button>
-        <button class="choice-card" data-value="Outra rede ou mídia" onclick="selectChoice(this, 9)" tabindex="0">
+        <button class="choice-card" data-value="Outra rede ou mídia" onclick="selectChoice(this, 10)" tabindex="0">
           <span class="choice-letter">E</span>
           <span>Outra rede ou mídia</span>
         </button>
@@ -831,10 +862,10 @@
     </div>
   </div>
 
-  <!-- STEP 10: Motivação -->
-  <div class="step" id="step-10" data-step="10">
+  <!-- STEP 11: Motivação -->
+  <div class="step" id="step-11" data-step="11">
     <div class="step-inner">
-      <div class="step-label">10 / 10</div>
+      <div class="step-label">11 / 11</div>
       <h2 class="question">O que te motivou a aplicar agora?</h2>
       <div class="input-wrap">
         <textarea
@@ -857,8 +888,8 @@
     </div>
   </div>
 
-  <!-- STEP 11: Disclaimer -->
-  <div class="step" id="step-11" data-step="11">
+  <!-- STEP 12: Disclaimer -->
+  <div class="step" id="step-12" data-step="12">
     <div class="step-inner">
       <div class="disclaimer-badge">IMPORTANTE</div>
       <h2 class="question" style="font-size: clamp(18px, 3.5vw, 28px); max-width: 600px;">O investimento para participar dos nossos programas de aceleração e implementação é entre <span style="color: var(--gold);">R$&nbsp;5.000</span> e <span style="color: var(--gold);">R$&nbsp;150.000</span>.</h2>
@@ -881,8 +912,8 @@
     </div>
   </div>
 
-  <!-- STEP 12: Success -->
-  <div class="step" id="step-12" data-step="12">
+  <!-- STEP 13: Success -->
+  <div class="step" id="step-13" data-step="13">
     <div class="step-inner success-screen">
       <div class="success-icon">
         <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -914,12 +945,13 @@
 <script>
   // ─── State ───
   let currentStep = 0;
-  const TOTAL_STEPS = 10; // steps 1–9 (not counting welcome/success)
+  const TOTAL_STEPS = 11; // steps 1–9 (not counting welcome/success)
   const formData = {
     nome: '',
     whatsapp: '',
     email: '',
     instagram: '',
+    funcionarios: '',
     segmento: '',
     faturamento: '',
     tempo_negocio: '',
@@ -934,7 +966,7 @@
 
   // ─── Progress ───
   function updateProgress(step) {
-    const pct = step === 0 ? 0 : step >= 11 ? 100 : Math.round((step / TOTAL_STEPS) * 100);
+    const pct = step === 0 ? 0 : step >= 13 ? 100 : Math.round((step / TOTAL_STEPS) * 100);
     document.getElementById('progress-bar').style.width = pct + '%';
   }
 
@@ -1023,7 +1055,7 @@
       }
       return true;
     }
-    if (step === 5) {
+    if (step === 6) {
       const val = document.getElementById('input-segmento').value.trim();
       if (!val || val.length < 2) {
         showError('segmento');
@@ -1032,7 +1064,7 @@
       formData.segmento = val;
       return true;
     }
-    if (step === 10) {
+    if (step === 11) {
       const val = document.getElementById('input-motivacao').value.trim();
       if (!val || val.length < 10) {
         showError('motivacao');
@@ -1082,7 +1114,7 @@
 
   // ─── Submit ───
   function submitForm() {
-    if (!validateStep(9)) return;
+    if (!validateStep(11)) return;
 
     const payload = {
       ...formData,
@@ -1128,7 +1160,7 @@
 
     // Backspace on empty input = go back
     if (e.key === 'Backspace' && [1, 2, 3, 4].includes(step)) {
-      const input = document.getElementById('input-' + ['', 'nome', 'whatsapp', 'email', 'instagram', 'segmento'][step]);
+      const input = document.getElementById('input-' + ['', 'nome', 'whatsapp', 'email', 'instagram', '', 'segmento'][step > 5 ? step : step]);
       if (input && input.value === '') {
         e.preventDefault();
         goBack();
@@ -1222,7 +1254,7 @@
         fetch(SHEETS_URL, { method: 'POST', body: JSON.stringify(payload) }).catch(() => {});
       }
       try { localStorage.setItem('mentory_aplicacao_' + Date.now(), JSON.stringify(payload)); } catch(e) {}
-      goToStep(12);
+      goToStep(13);
     }, 350);
   }
 
