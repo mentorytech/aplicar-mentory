@@ -161,6 +161,80 @@
       line-height: 1.6;
     }
 
+    /* ── Phone row / country selector ── */
+    .phone-row {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+    }
+    .phone-row .phone-input {
+      flex: 1;
+    }
+    .country-selector {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 12px 10px 12px 0;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+      transition: border-color 0.25s;
+      user-select: none;
+    }
+    .country-selector:hover { border-bottom-color: var(--gold); }
+    .country-flag { font-size: 20px; line-height: 1; }
+    .country-ddi { font-family: 'Montserrat', sans-serif; font-size: 14px; font-weight: 500; color: var(--gold); }
+    .country-arrow { width: 12px; height: 12px; transition: transform 0.2s; }
+    .country-arrow.open { transform: rotate(180deg); }
+    .country-dropdown {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      width: 100%;
+      background: #111;
+      border: 1px solid rgba(184,146,42,0.3);
+      border-radius: 6px;
+      z-index: 100;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.6);
+      overflow: hidden;
+    }
+    .country-dropdown.open { display: block; }
+    .country-search {
+      width: 100%;
+      background: #1a1a1a;
+      border: none;
+      border-bottom: 1px solid rgba(184,146,42,0.2);
+      color: #fff;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      padding: 10px 14px;
+      outline: none;
+    }
+    .country-search::placeholder { color: #666; }
+    .country-list {
+      max-height: 220px;
+      overflow-y: auto;
+    }
+    .country-list::-webkit-scrollbar { width: 4px; }
+    .country-list::-webkit-scrollbar-track { background: #111; }
+    .country-list::-webkit-scrollbar-thumb { background: rgba(184,146,42,0.4); border-radius: 2px; }
+    .country-option {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 13px;
+      color: #ccc;
+      transition: background 0.15s;
+    }
+    .country-option:hover { background: rgba(184,146,42,0.1); color: #fff; }
+    .country-option .opt-flag { font-size: 18px; }
+    .country-option .opt-name { flex: 1; }
+    .country-option .opt-ddi { color: var(--gold); font-weight: 500; }
+
     .input-hint {
       font-size: 12px;
       color: var(--text-muted);
@@ -502,16 +576,27 @@
       <div class="step-label">02 / 09</div>
       <h2 class="question">Qual é o seu WhatsApp?</h2>
       <div class="input-wrap">
-        <input
-          class="form-input"
-          id="input-whatsapp"
-          type="tel"
-          placeholder="(11) 99999-9999"
-          autocomplete="tel"
-          data-field="whatsapp"
-        />
+        <div class="phone-row">
+          <div class="country-selector" id="country-selector" onclick="toggleCountryDropdown()">
+            <span class="country-flag" id="selected-flag">🇧🇷</span>
+            <span class="country-ddi" id="selected-ddi">+55</span>
+            <svg class="country-arrow" id="country-arrow" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 4L6 8L10 4" stroke="#B8922A" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <input
+            class="form-input phone-input"
+            id="input-whatsapp"
+            type="tel"
+            placeholder="(11) 99999-9999"
+            autocomplete="tel"
+            data-field="whatsapp"
+          />
+        </div>
+        <div class="country-dropdown" id="country-dropdown">
+          <input class="country-search" id="country-search" type="text" placeholder="Buscar país..." oninput="filterCountries(this.value)" />
+          <div class="country-list" id="country-list"></div>
+        </div>
         <div class="input-hint">Você receberá nosso contato por aqui.</div>
-        <div class="input-error" id="error-whatsapp">Informe um WhatsApp válido com DDD (mínimo 10 dígitos).</div>
+        <div class="input-error" id="error-whatsapp">Informe um número de WhatsApp válido.</div>
       </div>
       <button class="btn-primary" onclick="advanceStep(2)">
         Avançar
@@ -830,7 +915,7 @@
         showError('whatsapp');
         return false;
       }
-      formData.whatsapp = raw;
+      formData.whatsapp = selectedCountry.ddi + ' ' + raw;
       return true;
     }
     if (step === 3) {
@@ -999,19 +1084,103 @@
     }
   });
 
-  // ─── WhatsApp mask (lightweight) ───
-  document.getElementById('input-whatsapp').addEventListener('input', function(e) {
-    let v = e.target.value.replace(/\D/g, '');
-    if (v.length > 11) v = v.slice(0, 11);
-    if (v.length > 7) {
-      v = '(' + v.slice(0, 2) + ') ' + v.slice(2, 7) + '-' + v.slice(7);
-    } else if (v.length > 2) {
-      v = '(' + v.slice(0, 2) + ') ' + v.slice(2);
-    } else if (v.length > 0) {
-      v = '(' + v;
+  // ─── Country selector ───
+  const COUNTRIES = [
+    { flag:'🇧🇷', name:'Brasil', ddi:'+55', placeholder:'(11) 99999-9999' },
+    { flag:'🇺🇸', name:'Estados Unidos', ddi:'+1', placeholder:'(555) 000-0000' },
+    { flag:'🇵🇹', name:'Portugal', ddi:'+351', placeholder:'912 345 678' },
+    { flag:'🇦🇴', name:'Angola', ddi:'+244', placeholder:'923 456 789' },
+    { flag:'🇲🇿', name:'Moçambique', ddi:'+258', placeholder:'84 123 4567' },
+    { flag:'🇨🇻', name:'Cabo Verde', ddi:'+238', placeholder:'991 1234' },
+    { flag:'🇸🇹', name:'São Tomé e Príncipe', ddi:'+239', placeholder:'981 2345' },
+    { flag:'🇬🇼', name:'Guiné-Bissau', ddi:'+245', placeholder:'955 123 456' },
+    { flag:'🇬🇶', name:'Guiné Equatorial', ddi:'+240', placeholder:'222 123 456' },
+    { flag:'🇹🇱', name:'Timor-Leste', ddi:'+670', placeholder:'7721 2345' },
+    { flag:'🇦🇷', name:'Argentina', ddi:'+54', placeholder:'11 1234-5678' },
+    { flag:'🇨🇱', name:'Chile', ddi:'+56', placeholder:'9 1234 5678' },
+    { flag:'🇨🇴', name:'Colômbia', ddi:'+57', placeholder:'310 123 4567' },
+    { flag:'🇲🇽', name:'México', ddi:'+52', placeholder:'55 1234 5678' },
+    { flag:'🇵🇪', name:'Peru', ddi:'+51', placeholder:'912 345 678' },
+    { flag:'🇺🇾', name:'Uruguai', ddi:'+598', placeholder:'91 234 567' },
+    { flag:'🇵🇾', name:'Paraguai', ddi:'+595', placeholder:'981 234 567' },
+    { flag:'🇧🇴', name:'Bolívia', ddi:'+591', placeholder:'7123 4567' },
+    { flag:'🇻🇪', name:'Venezuela', ddi:'+58', placeholder:'412 123 4567' },
+    { flag:'🇪🇨', name:'Equador', ddi:'+593', placeholder:'99 123 4567' },
+    { flag:'🇬🇧', name:'Reino Unido', ddi:'+44', placeholder:'7911 123456' },
+    { flag:'🇩🇪', name:'Alemanha', ddi:'+49', placeholder:'151 12345678' },
+    { flag:'🇫🇷', name:'França', ddi:'+33', placeholder:'6 12 34 56 78' },
+    { flag:'🇪🇸', name:'Espanha', ddi:'+34', placeholder:'612 345 678' },
+    { flag:'🇮🇹', name:'Itália', ddi:'+39', placeholder:'312 345 6789' },
+    { flag:'🇨🇦', name:'Canadá', ddi:'+1', placeholder:'(416) 000-0000' },
+    { flag:'🇦🇺', name:'Austrália', ddi:'+61', placeholder:'412 345 678' },
+    { flag:'🇯🇵', name:'Japão', ddi:'+81', placeholder:'90-1234-5678' },
+    { flag:'🇨🇳', name:'China', ddi:'+86', placeholder:'131 2345 6789' },
+    { flag:'🇦🇪', name:'Emirados Árabes', ddi:'+971', placeholder:'50 123 4567' },
+    { flag:'🇿🇦', name:'África do Sul', ddi:'+27', placeholder:'71 234 5678' },
+  ];
+
+  let selectedCountry = COUNTRIES[0];
+
+  function buildCountryList(filter) {
+    const list = document.getElementById('country-list');
+    list.innerHTML = '';
+    const filtered = filter
+      ? COUNTRIES.filter(c => c.name.toLowerCase().includes(filter.toLowerCase()) || c.ddi.includes(filter))
+      : COUNTRIES;
+    filtered.forEach(c => {
+      const el = document.createElement('div');
+      el.className = 'country-option';
+      el.innerHTML = `<span class="opt-flag">${c.flag}</span><span class="opt-name">${c.name}</span><span class="opt-ddi">${c.ddi}</span>`;
+      el.addEventListener('click', () => selectCountry(c));
+      list.appendChild(el);
+    });
+  }
+
+  function selectCountry(c) {
+    selectedCountry = c;
+    document.getElementById('selected-flag').textContent = c.flag;
+    document.getElementById('selected-ddi').textContent = c.ddi;
+    document.getElementById('input-whatsapp').placeholder = c.placeholder;
+    document.getElementById('input-whatsapp').value = '';
+    closeCountryDropdown();
+    document.getElementById('input-whatsapp').focus();
+  }
+
+  function toggleCountryDropdown() {
+    const dd = document.getElementById('country-dropdown');
+    const arrow = document.getElementById('country-arrow');
+    const isOpen = dd.classList.contains('open');
+    if (isOpen) {
+      closeCountryDropdown();
+    } else {
+      dd.classList.add('open');
+      arrow.classList.add('open');
+      document.getElementById('country-search').value = '';
+      buildCountryList('');
+      setTimeout(() => document.getElementById('country-search').focus(), 50);
     }
-    e.target.value = v;
+  }
+
+  function closeCountryDropdown() {
+    document.getElementById('country-dropdown').classList.remove('open');
+    document.getElementById('country-arrow').classList.remove('open');
+  }
+
+  function filterCountries(val) { buildCountryList(val); }
+
+  // Close on outside click
+  document.addEventListener('click', function(e) {
+    const sel = document.getElementById('country-selector');
+    const dd = document.getElementById('country-dropdown');
+    if (sel && dd && !sel.contains(e.target) && !dd.contains(e.target)) {
+      closeCountryDropdown();
+    }
   });
+
+  buildCountryList('');
+
+  // ─── WhatsApp validation (international-aware) ───
+  // No mask — let user type naturally; just validate min digits
 
   // ─── Init ───
   updateProgress(0);
