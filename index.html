@@ -467,6 +467,26 @@
       margin: 0 auto 48px;
     }
 
+
+    /* ─── Disclaimer step ─── */
+    .disclaimer-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: var(--gold);
+      border: 1px solid rgba(184,146,42,0.5);
+      padding: 4px 12px;
+      border-radius: 2px;
+      margin-bottom: 24px;
+    }
+    .disclaimer-sub {
+      font-size: 16px;
+      color: rgba(255,255,255,0.75);
+      margin: 12px 0 32px;
+      max-width: 500px;
+    }
+
     /* ─── Success Screen ─── */
     .success-screen {
       text-align: center;
@@ -837,8 +857,32 @@
     </div>
   </div>
 
-  <!-- STEP 11: Success -->
+  <!-- STEP 11: Disclaimer -->
   <div class="step" id="step-11" data-step="11">
+    <div class="step-inner">
+      <div class="disclaimer-badge">IMPORTANTE</div>
+      <h2 class="question" style="font-size: clamp(18px, 3.5vw, 28px); max-width: 600px;">O investimento para participar dos nossos programas de aceleração e implementação é entre <span style="color: var(--gold);">R$&nbsp;5.000</span> e <span style="color: var(--gold);">R$&nbsp;150.000</span>.</h2>
+      <p class="disclaimer-sub">Você gostaria de seguir com o processo seletivo?</p>
+      <div class="choices" id="choices-disclaimer" data-field="intencao_investimento">
+        <button class="choice-card" data-value="Quero avaliar opções de parcelamento" onclick="selectDisclaimerChoice(this, 'Quero avaliar opções de parcelamento')" tabindex="0">
+          <span class="choice-letter">A</span>
+          <span>Quero avaliar opções de parcelamento</span>
+        </button>
+        <button class="choice-card" data-value="Ainda não estou decidido, quero mais informações" onclick="selectDisclaimerChoice(this, 'Ainda não estou decidido, quero mais informações')" tabindex="0">
+          <span class="choice-letter">B</span>
+          <span>Ainda não estou decidido, quero mais informações</span>
+        </button>
+        <button class="choice-card" data-value="Quero pagar à vista" onclick="selectDisclaimerChoice(this, 'Quero pagar à vista')" tabindex="0">
+          <span class="choice-letter">C</span>
+          <span>Quero pagar à vista</span>
+        </button>
+      </div>
+      <div class="input-error" id="error-disclaimer" style="margin-top:12px;">Selecione uma opção para continuar.</div>
+    </div>
+  </div>
+
+  <!-- STEP 12: Success -->
+  <div class="step" id="step-12" data-step="12">
     <div class="step-inner success-screen">
       <div class="success-icon">
         <svg viewBox="0 0 72 72" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -890,7 +934,7 @@
 
   // ─── Progress ───
   function updateProgress(step) {
-    const pct = step === 0 ? 0 : step === 11 ? 100 : Math.round((step / TOTAL_STEPS) * 100);
+    const pct = step === 0 ? 0 : step >= 11 ? 100 : Math.round((step / TOTAL_STEPS) * 100);
     document.getElementById('progress-bar').style.width = pct + '%';
   }
 
@@ -1046,29 +1090,13 @@
       source: window.location.href
     };
 
-    // 1. Webhook
-    if (WEBHOOK_URL !== 'WEBHOOK_URL_AQUI') {
-      fetch(WEBHOOK_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      }).catch(() => {});
-    }
-
-    // 2. Google Sheets
-    if (SHEETS_URL !== 'SHEETS_SCRIPT_URL_AQUI') {
-      fetch(SHEETS_URL, {
-        method: 'POST',
-        body: JSON.stringify(payload)
-      }).catch(() => {});
-    }
-
-    // 3. localStorage backup
+    // Data will be sent after disclaimer step (selectDisclaimerChoice)
+    // Save draft to localStorage
     try {
-      localStorage.setItem('mentory_aplicacao_' + Date.now(), JSON.stringify(payload));
+      localStorage.setItem('mentory_aplicacao_draft_' + Date.now(), JSON.stringify(payload));
     } catch (e) {}
 
-    // Go to success
+    // Go to disclaimer (data will be sent after disclaimer choice)
     goToStep(11);
   }
 
@@ -1171,6 +1199,32 @@
   ];
 
   let selectedCountry = COUNTRIES[0];
+
+
+  function selectDisclaimerChoice(btn, value) {
+    // Deselect all
+    document.querySelectorAll('#choices-disclaimer .choice-card').forEach(c => c.classList.remove('selected'));
+    btn.classList.add('selected');
+    formData.intencao_investimento = value;
+    document.getElementById('error-disclaimer').style.display = 'none';
+    // Auto-advance after short delay
+    setTimeout(() => {
+      // Update payload with disclaimer choice and send
+      const payload = {
+        ...formData,
+        timestamp: new Date().toISOString(),
+        source: window.location.href
+      };
+      if (WEBHOOK_URL !== 'WEBHOOK_URL_AQUI') {
+        fetch(WEBHOOK_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(() => {});
+      }
+      if (SHEETS_URL !== 'SHEETS_SCRIPT_URL_AQUI') {
+        fetch(SHEETS_URL, { method: 'POST', body: JSON.stringify(payload) }).catch(() => {});
+      }
+      try { localStorage.setItem('mentory_aplicacao_' + Date.now(), JSON.stringify(payload)); } catch(e) {}
+      goToStep(12);
+    }, 350);
+  }
 
   function buildCountryList(filter) {
     const list = document.getElementById('country-list');
